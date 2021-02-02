@@ -5,7 +5,7 @@
 
 This program is done in Python, developed on Pycharm and uses the OpenCV library
 
-This Python program detects faces from a live video
+This Python program detects faces from a live video and draws a blue rectangle around them
 The program then saves the video under the name face_detector_output_file in avi format (.avi)
 
 To run the program you must have OpenCV installed on your machine 
