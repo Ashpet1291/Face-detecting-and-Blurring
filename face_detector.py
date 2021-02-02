@@ -45,16 +45,20 @@ while (True):
 
     # 1.3-means that it can scale 30% down to try and match the faces better.
     scaleFactor = 1.3
-    # 10 is minimum neighbors
+    # specifies how many neighbors, or detections, each candidate rectangle should have to retain it
     minNeighbors = 10
+    # allows you to define the minimum possible object size measured in pixels.
+    # Objects smaller than this parameter are ignored.
+    minSize = (20, 20)
     # use the face_cascade object to detect faces in the Image
-    faces = face_cascade.detectMultiScale(gray, scaleFactor, minNeighbors, minSize=(20, 20))
+    faces = face_cascade.detectMultiScale(gray, scaleFactor, minNeighbors, minSize)
 
 
     # rectangle will use these to locate and draw rectangles around the detected objects in the input image/video.
     for (x, y, w, h) in faces:
 
         # changes the color of the line drawn
+        # BGR- cuz that's default in OpenCV
         lineColor = (255, 0, 0)
         # thickness of the line
         lineThickness = 2
@@ -62,9 +66,10 @@ while (True):
         # function to draw the rectangles where a face was detected
         cv2.rectangle(frame, (x, y), (x + w, y + h), lineColor, lineThickness)
 
-        #     #locations of faces
+        #     # prints locations of faces
         #     print("detected faces in these pixel locations x:", x,"y:", y, "x+w:", x+w, "y+h+:", y+h)
 
+    # if there is a frame read in
     if ret == True:
 
         # Write the frame into the file face_detector_output_file.avi'
