@@ -1,6 +1,6 @@
 # Python program detects faces in a live video
 # The program then saves the video under the name face_detector in avi format (.avi)
-# to compile in terminal type "python face_detector.py"
+# to compile in terminal type "python face_blurring.py"
 
 #import openCV into project
 import cv2
@@ -15,7 +15,7 @@ video = cv2.VideoCapture(0)
 
 # We need to check if camera is opened previously or not
 # if it is, program sends error message
-if (video.isOpened() == False):
+if not video.isOpened():
     print("Error reading video file")
 
 
@@ -28,8 +28,8 @@ size = (frame_width, frame_height)
 
 
 # VideoWriter object will create a frame of above defined image
-# The output is stored in 'face_detector_output_file.avi' file.
-result = cv2.VideoWriter('face_detector_output_file.avi',
+# The output is stored in 'blur_faces_output_file.avi' file.
+result = cv2.VideoWriter('blur_faces_output_file.avi',
                          cv2.VideoWriter_fourcc(*'MJPG'), 10, size)
 
 while (True):
@@ -47,7 +47,7 @@ while (True):
     # 1.3-means that it can scale 30% down to try and match the faces better.
     scaleFactor = 1.3
     # specifies how many neighbors, or detections, each candidate rectangle should have to retain it
-    minNeighbors = 10
+    minNeighbors = 6
 
     # minSize allows you to define the minimum possible object size measured in pixels.
     # Objects smaller than this parameter are ignored.
@@ -57,20 +57,15 @@ while (True):
     # rectangle will use these to locate and draw rectangles around the detected objects in the input image/video.
     for (x, y, w, h) in faces:
 
-        # changes the color of the line drawn
-        # BGR- cuz that's default in OpenCV
-        lineColor = (255, 0, 0)
-        # thickness of the line
-        lineThickness = 2
-        # (x, y), (x + w, y + h) are the four pixel locations for the detected face(s).
-        # function to draw the rectangles where a face was detected
-        cv2.rectangle(frame, (x, y), (x + w, y + h), lineColor, lineThickness)
-
-        #     # prints locations of faces
-        #     print("detected faces in these pixel locations x:", x,"y:", y, "x+w:", x+w, "y+h+:", y+h)
+        # blurred faces
+        # Select the detected face area
+        face_color = frame[y:y + h, x:x + w]
+        # Blur the detected face by applying a Gaussian Blur
+        blur = cv2.GaussianBlur(face_color, (51, 51), 0)
+        frame[y:y + h, x:x + w] = blur
 
     # if there is a frame read in
-    if ret == True:
+    if ret:
 
         # Write the frame into the file face_detector_output_file.avi'
         result.write(frame)
@@ -94,5 +89,5 @@ result.release()
 # Destroy the window that was showing the video stream
 cv2.destroyAllWindows()
 
-#print succes message to console
+# print success message to console
 print("The video was successfully saved")
