@@ -37,7 +37,7 @@ while (True):
     # ret checks return at each frame
     ret, frame = video.read()
 
-    # Convert frame to grayscale
+    # Color has a bunch of extra data, so to make it easier, convert frame to grayscale
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
     # Load the cascade for face training data
@@ -47,11 +47,11 @@ while (True):
     scaleFactor = 1.3
     # specifies how many neighbors, or detections, each candidate rectangle should have to retain it
     minNeighbors = 10
-    # allows you to define the minimum possible object size measured in pixels.
+    
+    # minSize allows you to define the minimum possible object size measured in pixels.
     # Objects smaller than this parameter are ignored.
-    minSize = (20, 20)
     # use the face_cascade object to detect faces in the Image
-    faces = face_cascade.detectMultiScale(gray, scaleFactor, minNeighbors, minSize)
+    faces = face_cascade.detectMultiScale(gray, scaleFactor, minNeighbors, minSize = (20, 20))
 
 
     # rectangle will use these to locate and draw rectangles around the detected objects in the input image/video.
