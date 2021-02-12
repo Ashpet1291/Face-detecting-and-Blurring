@@ -13,9 +13,9 @@ import cv2
 # This will return a live video from the webcam on your computer.
 video = cv2.VideoCapture(0)
 
-# We need to check if camera is opened previously or not
-# if it is, program sends error message
-if (video.isOpened() == False):
+# We need to check if camera opened
+# if it did not, program sends error message
+if not video.isOpened():
     print("Error reading video file")
 
 
